@@ -1,24 +1,8 @@
 import axios from "axios";
 import Image from "next/image";
+import { MicroCMSResponse, QiitaResponse } from "../../domain/article";
 
-type QiitaResponse = {
-  id: string;
-  url: string;
-  title: string;
-  image: string;
-}
 
-type MicroCMSContent = {
-  id: string;
-  title: string;
-  eyecatch: {
-    url: string;
-  }
-}
-
-type MicroCMSResponse = {
-  contents: MicroCMSContent[];
-}
 
 export default async function Home() {
   const getQiitaItems = async () => {
@@ -40,7 +24,7 @@ export default async function Home() {
   };
 
   const getMicroCMSItems = async () => {
-    const response = await axios.get<MicroCMSResponse>(
+    const response = await axios.get<MicroCMSResponse >(
       "https://g1tp0cjbtz.microcms.io/api/v1/blogs",
       {
         headers: {
