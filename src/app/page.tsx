@@ -8,6 +8,18 @@ type QiitaResponse = {
   image: string;
 }
 
+type MicroCMSContent = {
+  id: string;
+  title: string;
+  eyecatch: {
+    url: string;
+  }
+}
+
+type MicroCMSResponse = {
+  contents: MicroCMSContent[];
+}
+
 export default async function Home() {
   const getQiitaItems = async () => {
     const response = await axios.get<QiitaResponse[]>(
@@ -27,7 +39,26 @@ export default async function Home() {
     }))
   };
 
+  const getMicroCMSItems = async () => {
+    const response = await axios.get<MicroCMSResponse>(
+      "https://g1tp0cjbtz.microcms.io/api/v1/blogs",
+      {
+        headers: {
+          "X-MICROCMS-API-KEY": process.env.MICROCMS_API_KEY,
+        },
+      }
+    )
+
+    return response.data.contents.map((item) => ({
+      id: item.id,
+      title: item.title,
+      image: item.eyecatch.url,
+      url: `blogs/${item.id}`
+    }))
+  }
+
   const qiitaItems = await getQiitaItems();
+  const MicroCMSItems = await getMicroCMSItems();
   return (
     <div>
       <h1>トップページ</h1>
@@ -40,6 +71,15 @@ export default async function Home() {
         ))
         }
       </ul>
+      <ul>
+        {MicroCMSItems.map((item) => (
+          <li key={item.id}>
+            <Image src={item.image} alt="" width={100} height={100} />
+            <a href={item.url}>{item.title}</a>
+          </li>
+        ))
+        }
+      </ul>      
     </div>
 
   );
