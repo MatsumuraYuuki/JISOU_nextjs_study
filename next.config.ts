@@ -1,5 +1,4 @@
 import type { NextConfig } from "next";
-import { hostname } from "os";
 
 const nextConfig: NextConfig = {
   images: {
@@ -12,8 +11,9 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'images.microcms-assets.io',
       }
-    ]
-  }
+    ],
+  },
+  cacheComponents: true,
 };
 
 export default nextConfig;
